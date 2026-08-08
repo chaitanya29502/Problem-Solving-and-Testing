@@ -1,0 +1,55 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.*;
+
+public class Solution {
+    static class SensorStats {
+        double totalTemp = 0;
+        int count = 0;
+
+        void add(double temp) {
+            this.totalTemp += temp;
+            this.count++;
+        }
+
+        double getAverage() {
+            return totalTemp / count;
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String line = reader.readLine();
+        if (line == null || line.trim().isEmpty()) return;
+
+        int n = Integer.parseInt(line.trim());
+
+        // Map to store running sum and count per sensor
+        Map<String, SensorStats> sensorMap = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            String[] tokens = reader.readLine().trim().split("\\s+");
+            String sensorId = tokens[0];
+            double temp = Double.parseDouble(tokens[1]);
+
+            // 1. Filter temperature > 50
+            if (temp > 50) {
+                // 2 & 3. Group by Sensor ID and update sum/count
+                sensorMap.putIfAbsent(sensorId, new SensorStats());
+                sensorMap.get(sensorId).add(temp);
+            }
+        }
+
+        // Convert map entries to a list for sorting
+        List<Map.Entry<String, SensorStats>> list = new ArrayList<>(sensorMap.entrySet());
+
+        // 4. Sort sensors by average temperature in descending order
+        list.sort((a, b) -> Double.compare(b.getValue().getAverage(), a.getValue().getAverage()));
+
+        // Display Output
+        for (Map.Entry<String, SensorStats> entry : list) {
+            System.out.printf("%s %.1f%n", entry.getKey(), entry.getValue().getAverage());
+        }
+    }
+}
