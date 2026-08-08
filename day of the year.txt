@@ -1,0 +1,25 @@
+class Solution {
+    public int dayOfYear(String date) {
+        // Parse year, month, and day from the "YYYY-MM-DD" string
+        String[] parts = date.split("-");
+        int year = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int day = Integer.parseInt(parts[2]);
+
+        // Days in each month for a non-leap year
+        int[] daysInMonths = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+        // Check for leap year and adjust February
+        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+            daysInMonths[1] = 29;
+        }
+
+        // Sum up days from previous months
+        int dayCount = day;
+        for (int i = 0; i < month - 1; i++) {
+            dayCount += daysInMonths[i];
+        }
+
+        return dayCount;
+    }
+}
