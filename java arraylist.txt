@@ -1,0 +1,45 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Read the number of lines
+        int n = scanner.nextInt();
+
+        // 2D List structure using ArrayList of ArrayLists
+        List<List<Integer>> lines = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            int d = scanner.nextInt(); // Number of integers in this line
+            List<Integer> currentLine = new ArrayList<>();
+            for (int j = 0; j < d; j++) {
+                currentLine.add(scanner.nextInt());
+            }
+            lines.add(currentLine);
+        }
+
+        // Read the number of queries
+        int q = scanner.nextInt();
+
+        for (int i = 0; i < q; i++) {
+            int x = scanner.nextInt(); // 1-based line index
+            int y = scanner.nextInt(); // 1-based position index
+
+            // Convert to 0-based indices and perform bounds checks
+            int lineIdx = x - 1;
+            int posIdx = y - 1;
+
+            if (lineIdx >= 0 && lineIdx < lines.size() && 
+                posIdx >= 0 && posIdx < lines.get(lineIdx).size()) {
+                System.out.println(lines.get(lineIdx).get(posIdx));
+            } else {
+                System.out.println("ERROR!");
+            }
+        }
+
+        scanner.close();
+    }
+}
