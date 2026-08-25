@@ -1,0 +1,46 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) {
+        List<String> result = new ArrayList<>();
+        
+        for (String word : words) {
+            if (matches(word, pattern)) {
+                result.add(word);
+            }
+        }
+        
+        return result;
+    }
+
+    private boolean matches(String word, String pattern) {
+        if (word.length() != pattern.length()) {
+            return false;
+        }
+
+        Map<Character, Character> patternToWord = new HashMap<>();
+        Map<Character, Character> wordToPattern = new HashMap<>();
+
+        for (int i = 0; i < pattern.length(); i++) {
+            char p = pattern.charAt(i);
+            char w = word.charAt(i);
+
+            if (!patternToWord.containsKey(p)) {
+                patternToWord.put(p, w);
+            }
+            if (!wordToPattern.containsKey(w)) {
+                wordToPattern.put(w, p);
+            }
+
+            // Verify bijection consistency
+            if (patternToWord.get(p) != w || wordToPattern.get(w) != p) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
