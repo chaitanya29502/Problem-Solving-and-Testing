@@ -1,0 +1,31 @@
+class Solution {
+    public int maxSubarraySumCircular(int[] nums) {
+        int totalSum = 0;
+        
+        int maxAccumulated = nums[0];
+        int currentMax = 0;
+        
+        int minAccumulated = nums[0];
+        int currentMin = 0;
+
+        for (int num : nums) {
+            // Standard Kadane's algorithm for Maximum Subarray
+            currentMax = Math.max(num, currentMax + num);
+            maxAccumulated = Math.max(maxAccumulated, currentMax);
+
+            // Inverted Kadane's algorithm for Minimum Subarray
+            currentMin = Math.min(num, currentMin + num);
+            minAccumulated = Math.min(minAccumulated, currentMin);
+
+            totalSum += num;
+        }
+
+        // If all numbers are negative, maxAccumulated will be negative.
+        // Return maxAccumulated directly (wrapping would return 0 / empty array).
+        if (maxAccumulated < 0) {
+            return maxAccumulated;
+        }
+
+        return Math.max(maxAccumulated, totalSum - minAccumulated);
+    }
+}
